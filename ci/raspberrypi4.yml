@@ -51,6 +51,12 @@ local_conf_header:
     IMAGE_INSTALL:append = "audioreach-graphservices tinyalsa audioreach-graphmgr audioreach-engine audioreach-conf"
   extra: |
     EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-login"
+  git-dl: |
+    # Shared git clone dirs get corrupted when jobs on different hosts
+    # update them concurrently: keep them job-local and share history
+    # through the atomically written git2_*.tar.gz tarballs in DL_DIR.
+    GITDIR = "${TMPDIR}/git2"
+    BB_GENERATE_MIRROR_TARBALLS = "1"
   license-accept:
     LICENSE_FLAGS_ACCEPTED += "synaptics-killswitch"
 
